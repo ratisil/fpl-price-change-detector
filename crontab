@@ -1,2 +1,1 @@
-# Runs at 8:30 AM, then sleeps 20s before the Python script
-30 8 * * * root sleep 20; /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
+0 35 15 * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
