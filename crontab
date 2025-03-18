@@ -1,2 +1,1 @@
-# Run the price change detector at 8:30 AM (Bangkok time) daily
-30 8 * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/fpl_price_changes.log 2>&1
+*/5 * * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
