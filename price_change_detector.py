@@ -6,12 +6,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
 
-# File handler (overwrite the log file each run)
 file_handler = logging.FileHandler("/app/logs/fpl_price_changes.log", mode="w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# Stream handler (prints to stdout so container logs show it)
 stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)

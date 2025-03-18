@@ -3,6 +3,11 @@ services:
   fpl-price-detector:
     build: .
     container_name: fpl-price-detector
+    environment:
+      - FTP_HOST=YOUR_IP
+      - FTP_PORT=YOUR_PORT
+      - FTP_USER=YOUR_USER
+      - FTP_PASS=YOUR_PASSWORD
     volumes:
       - /volume1/docker/portainer/portainer_data/fpl-price-change/fpl_snapshots:/app/fpl_snapshots
       - /volume1/docker/portainer/portainer_data/fpl-price-change/logs:/app/logs
