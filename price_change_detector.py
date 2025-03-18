@@ -78,11 +78,13 @@ def main():
     # Process 1: Fetch today's snapshot (players + team mapping)
     today_players, team_mapping = fetch_snapshot()
     save_snapshot(today_players, today)
-    
-    # Process 2: Load yesterday's snapshot and compare
+
     yesterday_players = load_snapshot(yesterday)
     if not yesterday_players:
-        print("No snapshot available for yesterday; cannot compare.")
+        output = "No snapshot available for yesterday; cannot compare."
+        print(output)
+        with open("/app/logs/fpl_price_changes.log", "a") as log_file:
+            log_file.write(output + "\n")
         return
     
     risers, fallers = compare_snapshots(yesterday_players, today_players)
@@ -90,7 +92,8 @@ def main():
     # Process 3: Format and output the results
     output = format_output(risers, fallers, team_mapping)
     print(output)
-    # You can extend this to send the output via a messaging service if desired.
+    with open("/app/logs/fpl_price_changes.log", "a") as log_file:
+        log_file.write(output + "\n")
 
 if __name__ == "__main__":
     main()
