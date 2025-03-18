@@ -20,8 +20,8 @@ COPY crontab /etc/cron.d/fpl-cron
 # Give execution rights on the cron job file
 RUN chmod 0644 /etc/cron.d/fpl-cron
 
-# Create a directory for snapshots (this will be mounted as a volume)
-RUN mkdir /app/fpl_snapshots
+# Create directories for snapshots and logs
+RUN mkdir -p /app/fpl_snapshots && mkdir -p /app/logs
 
 # Run cron in the foreground
 CMD ["cron", "-f"]
