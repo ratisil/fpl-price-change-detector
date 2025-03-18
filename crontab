@@ -1,1 +1,1 @@
-04 16 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1'
+08 16 * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
