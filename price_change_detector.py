@@ -1,13 +1,20 @@
-import requests, json, datetime, logging
+import requests, json, datetime, logging, sys
 from pathlib import Path
 
-# Configure logging: overwrite the log file each run (only today's logs)
-logging.basicConfig(
-    filename="/app/logs/fpl_price_changes.log",
-    filemode="w",  # Use "w" to overwrite on each run; change to "a" to append if desired
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s: %(message)s"
-)
+# Set up logging to both a file and stdout.
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
+
+# File handler (overwrite each run)
+file_handler = logging.FileHandler("/app/logs/fpl_price_changes.log", mode="w")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+# Stream handler (prints to stdout)
+stream_handler = logging.StreamHandler(sys.stdout)
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
 
 # Constants and configuration
 API_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
@@ -15,34 +22,34 @@ DATA_DIR = Path("fpl_snapshots")
 DATA_DIR.mkdir(exist_ok=True)
 
 def fetch_snapshot():
-    logging.info("Fetching snapshot from FPL API.")
+    logger.info("Fetching snapshot from FPL API.")
     response = requests.get(API_URL)
     data = response.json()
     players = data.get("elements", [])
     teams = data.get("teams", [])
-    logging.info("Snapshot fetched successfully.")
+    logger.info("Snapshot fetched successfully.")
     return players, {team["id"]: team["short_name"] for team in teams}
 
 def save_snapshot(players, date):
     fname = DATA_DIR / f"{date:%Y-%m-%d}.json"
-    logging.info(f"Saving snapshot to {fname}.")
+    logger.info(f"Saving snapshot to {fname}.")
     with open(fname, "w") as f:
         json.dump(players, f)
-    logging.info("Snapshot saved.")
+    logger.info("Snapshot saved.")
 
 def load_snapshot(date):
     fname = DATA_DIR / f"{date:%Y-%m-%d}.json"
-    logging.info(f"Loading snapshot from {fname}.")
+    logger.info(f"Loading snapshot from {fname}.")
     if fname.exists():
         with open(fname, "r") as f:
             data = json.load(f)
-        logging.info("Snapshot loaded successfully.")
+        logger.info("Snapshot loaded successfully.")
         return data
-    logging.warning("Snapshot file does not exist.")
+    logger.warning("Snapshot file does not exist.")
     return []
 
 def compare_snapshots(old, new):
-    logging.info("Comparing snapshots.")
+    logger.info("Comparing snapshots.")
     old_prices = {p["id"]: p["now_cost"] for p in old}
     risers, fallers = [], []
     for player in new:
@@ -55,7 +62,7 @@ def compare_snapshots(old, new):
             risers.append((player, new_cost - old_cost))
         elif new_cost < old_cost:
             fallers.append((player, new_cost - old_cost))
-    logging.info(f"Comparison complete: {len(risers)} risers, {len(fallers)} fallers found.")
+    logger.info(f"Comparison complete: {len(risers)} risers, {len(fallers)} fallers found.")
     return risers, fallers
 
 def format_price(cost):
@@ -84,7 +91,7 @@ def format_output(risers, fallers, team_mapping):
     return "\n".join(output_lines)
 
 def main():
-    logging.info("Starting price change detection process.")
+    logger.info("Starting price change detection process.")
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
     
@@ -96,7 +103,7 @@ def main():
     yesterday_players = load_snapshot(yesterday)
     if not yesterday_players:
         message = "No snapshot available for yesterday; cannot compare."
-        logging.warning(message)
+        logger.warning(message)
         print(message)
         return
     
@@ -104,9 +111,9 @@ def main():
     
     # Process 3: Format and output the results
     output = format_output(risers, fallers, team_mapping)
-    logging.info("Formatted output ready.")
+    logger.info("Formatted output ready.")
+    logger.info("Process completed successfully. Output:\n" + output)
     print(output)
-    logging.info("Process completed successfully. Output:\n" + output)
 
 if __name__ == "__main__":
     main()
