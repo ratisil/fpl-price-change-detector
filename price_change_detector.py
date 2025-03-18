@@ -6,12 +6,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
 
-# File handler (overwrite log each run)
 file_handler = logging.FileHandler("/app/logs/fpl_price_changes.log", mode="w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# Stream handler (prints to stdout, so container logs show it)
 stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
@@ -113,6 +111,18 @@ def main():
     logger.info("Formatted output ready.")
     logger.info("Process completed successfully. Output:\n" + output)
     print(output)
+    
+    # Write the output to an HTML file, preserving formatting with a <pre> tag.
+html_content = f"""<html>
+<head><title>FPL Price Changes</title></head>
+<body><pre>
+{output}
+</pre></body>
+</html>"""
+html_filename = "/app/logs/fpl_prices.html"
+with open(html_filename, "w") as html_file:
+    html_file.write(html_content)
+logger.info(f"HTML output written to {html_filename}.")
 
 if __name__ == "__main__":
     main()
