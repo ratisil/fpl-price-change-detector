@@ -12,8 +12,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory
 WORKDIR /app
 
-# Copy the Python script into the container
+# Copy the Main Python script into the container
 COPY price_change_detector.py .
+
+# Copy the FTP Python script into the container
+COPY ftp_upload.py .
 
 # Install Python dependencies
 RUN pip install requests
