@@ -6,17 +6,17 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
 
-# File handler (overwrite the log file each run)
+# File handler (overwrite log each run)
 file_handler = logging.FileHandler("/app/logs/fpl_price_changes.log", mode="w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# Stream handler (prints to stdout so container logs show it)
+# Stream handler (prints to stdout, so container logs show it)
 stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
-# Constants and configuration - use absolute paths.
+# Constants and configuration - use absolute path for snapshots!
 API_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
 DATA_DIR = Path("/app/fpl_snapshots")
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -108,23 +108,11 @@ def main():
     
     risers, fallers = compare_snapshots(yesterday_players, today_players)
     
-    # Process 3: Format the output.
+    # Process 3: Format and output the results.
     output = format_output(risers, fallers, team_mapping)
     logger.info("Formatted output ready.")
     logger.info("Process completed successfully. Output:\n" + output)
     print(output)
-    
-    # Write the output to an HTML file with a title, overwriting it each run.
-    html_content = f"""<html>
-<head><title>FPL Price Changes</title></head>
-<body><pre>
-{output}
-</pre></body>
-</html>"""
-    html_filename = "/app/logs/fpl_prices.html"
-    with open(html_filename, "w") as html_file:
-        html_file.write(html_content)
-    logger.info(f"HTML output written to {html_filename}.")
 
 if __name__ == "__main__":
     main()
