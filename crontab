@@ -1,5 +1,4 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-10 20 * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
-
+22 20 * * * root cd /app && /usr/local/bin/python price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
