@@ -63,7 +63,7 @@ def format_output(risers, fallers, team_mapping):
     output_lines.append("")  # blank line
     
     # Price Fallers
-    output_lines.append(f"Price Fallers! 📉 ({len(fallers)}) #FPL")
+    output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
     for player, diff in fallers:
         team = team_mapping.get(player.get("team"), "UNK")
         line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
