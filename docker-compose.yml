@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  fpl-price-detector:
+    build: .
+    container_name: fpl-price-detector
+    volumes:
+      - /volume1/docker/portainer/portainer_data/fpl-price-change/fpl_snapshots:/app/fpl_snapshots
+      - /volume1/docker/portainer/portainer_data/fpl-price-change/fpl_price_changes.log:/app/fpl_price_changes.log
+    restart: unless-stopped
