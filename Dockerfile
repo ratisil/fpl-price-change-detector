@@ -3,7 +3,11 @@ FROM python:3.9-slim
 
 # Set timezone to Asia/Bangkok
 ENV TZ=Asia/Bangkok
+
 RUN apt-get update && apt-get install -y tzdata cron && rm -rf /var/lib/apt/lists/*
+
+# Symlink to the correct timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Set the working directory
 WORKDIR /app
