@@ -1,1 +1,1 @@
-08 16 * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
+26 19 * * * root /usr/local/bin/python /app/price_change_detector.py >> /app/logs/fpl_price_changes.log 2>&1
