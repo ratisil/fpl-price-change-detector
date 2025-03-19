@@ -114,13 +114,17 @@ def main():
     
     # Write the output to an HTML file with a title, overwriting it each run.
     html_content = f"""<html>
-<head><title>FPL Price Changes</title></head>
-<body><pre>
+<head>
+    <meta charset="UTF-8">
+    <title>FPL Price Changes</title>
+</head>
+<body>
+<pre>
 {output}
 </pre></body>
 </html>"""
     html_filename = "/app/logs/fpl_prices.html"
-    with open(html_filename, "w") as html_file:
+    with open(html_filename, "w", encoding="utf-8") as html_file:
         html_file.write(html_content)
     logger.info(f"HTML output written to {html_filename}.")
 
