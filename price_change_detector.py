@@ -72,18 +72,36 @@ def format_output(risers, fallers, team_mapping):
     today_str = datetime.date.today().strftime("%d/%m/%Y")
     output_lines = [today_str, ""]
     
-    output_lines.append(f"Price Risers! 📈 ({len(risers)})")
-    for player, diff in risers:
-        team = team_mapping.get(player.get("team"), "UNK")
-        line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
-        output_lines.append(line)
-    
-    output_lines.append("")
-    output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
-    for player, diff in fallers:
-        team = team_mapping.get(player.get("team"), "UNK")
-        line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
-        output_lines.append(line)
+    # Case 1: Both risers and fallers exist.
+    if risers and fallers:
+        output_lines.append(f"Price Risers! 📈 ({len(risers)})")
+        for player, diff in risers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+        output_lines.append("")
+        output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
+        for player, diff in fallers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+    # Case 2: Only risers.
+    elif risers:
+        output_lines.append(f"Price Risers! 📈 ({len(risers)})")
+        for player, diff in risers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+    # Case 3: Only fallers.
+    elif fallers:
+        output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
+        for player, diff in fallers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+    # Case 4: No changes.
+    else:
+        output_lines.append("No price change today.")
     
     return "\n".join(output_lines)
 
@@ -121,7 +139,8 @@ def main():
 <body>
 <pre>
 {output}
-</pre></body>
+</pre>
+</body>
 </html>"""
     html_filename = "/app/logs/fpl_prices.html"
     with open(html_filename, "w", encoding="utf-8") as html_file:
