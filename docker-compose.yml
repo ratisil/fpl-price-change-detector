@@ -3,11 +3,6 @@ services:
   fpl-price-check02:
     build: .
     container_name: fpl-price-check02
-    environment:
-      - FTP_HOST=${FTP_HOST}
-      - FTP_PORT=${FTP_PORT}
-      - FTP_USER=${FTP_USER}
-      - FTP_PASS=${FTP_PASS}
     volumes:
       - /volume1/docker/portainer/portainer_data/fpl-price-change/fpl_snapshots:/app/fpl_snapshots
       - /volume1/docker/portainer/portainer_data/fpl-price-change/logs:/app/logs
