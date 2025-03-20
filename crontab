@@ -2,5 +2,5 @@ SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 * * * * * root /bin/bash -c 'echo "Cron fired at $(date)" >> /app/logs/cron_debug.txt'
-35 09 * * * root /bin/bash -c 'cd /app && sleep 20 && /usr/local/bin/python price_change_detector.py'
-35 09 * * * root /bin/bash -c 'cd /app && sleep 45 && python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html'
+47 09 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python price_change_detector.py'
+48 09 * * * root /bin/bash -c 'cd /app && python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html'
