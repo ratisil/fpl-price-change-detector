@@ -6,7 +6,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Run FTP upload a few minutes later (give time for price detection to finish)
 # 46 12 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html' >> /app/logs/cron_ftp_upload.log 2>&1
-46 13 * * * root /bin/bash -c 'export FTP_HOST="$FTP_HOST"; export FTP_PORT="$FTP_PORT"; export FTP_USER="$FTP_USER"; export FTP_PASS="$FTP_PASS"; echo "FTP_PORT is: $FTP_PORT" >> /app/logs/cron_ftp_upload.log; cd /app && /usr/local/bin/python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html' >> /app/logs/cron_ftp_upload.log 2>&1
+02 14 * * * root /bin/bash -c 'export FTP_HOST="$FTP_HOST"; export FTP_USER="$FTP_USER"; export FTP_PASS="$FTP_PASS"; cd /app && /usr/local/bin/python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html' >> /app/logs/cron_ftp_upload.log 2>&1
 
 # # Run the environment test *after* the others, so it captures the environment
 # # after the other jobs *would have run*.

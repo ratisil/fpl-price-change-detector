@@ -14,7 +14,7 @@ logger.addHandler(stream_handler)
 
 def ftp_upload(local_filepath, remote_filename):
     ftp_host = os.environ.get("FTP_HOST")
-    ftp_port = 21  # Hardcoded port
+    ftp_port = int(os.environ.get("FTP_PORT"))
     ftp_user = os.environ.get("FTP_USER")
     ftp_pass = os.environ.get("FTP_PASS")
 
