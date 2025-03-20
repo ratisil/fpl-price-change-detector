@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  fpl-price-detector:
+  fpl-price-check02:
     build: .
-    container_name: fpl-price-detector
+    container_name: fpl-price-check02
     environment:
       - FTP_HOST=${FTP_HOST}
       - FTP_PORT=${FTP_PORT}
