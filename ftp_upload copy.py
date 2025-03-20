@@ -3,18 +3,6 @@ import os
 import sys
 from ftplib import FTP
 
-# --- DEBUGGING ---
-print("--- Debugging Environment Variables ---")
-print(f"FTP_HOST: {os.environ.get('FTP_HOST')}")
-print(f"FTP_USER: {os.environ.get('FTP_USER')}")
-print(f"FTP_PASS: {os.environ.get('FTP_PASS')}")  # Check if it exists
-print(f"All Environment Variables:")
-for k, v in os.environ.items():
-  if "FTP" in k:
-      print(f"  {k}={v}")
-print("--- End Debugging ---")
-# --- END DEBUGGING ---
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
