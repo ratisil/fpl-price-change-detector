@@ -1,5 +1,5 @@
-# Use Python 3.9 (non-slim)
-FROM python:3.9
+# Use Python 3.9 slim as base
+FROM python:3.9-slim
 
 # Set timezone to Asia/Bangkok
 ENV TZ=Asia/Bangkok
@@ -12,8 +12,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory
 WORKDIR /app
 
-# Copy ALL files from the current directory into /app
-COPY . .
+# Copy the Main Python script into the container
+COPY price_change_detector.py .
+
+# Copy the FTP Python script into the container
+COPY ftp_upload.py .
 
 # Install Python dependencies
 RUN pip install requests
