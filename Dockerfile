@@ -19,7 +19,7 @@ COPY . .
 RUN pip install requests
 
 # Copy the crontab file into the container
-COPY crontab /etc/cron.d/fpl-cron  # Keep this line
+COPY crontab /etc/cron.d/fpl-cron
 
 # Give execution rights on the cron job file
 RUN chmod 0644 /etc/cron.d/fpl-cron
