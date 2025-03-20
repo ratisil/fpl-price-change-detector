@@ -1,5 +1,5 @@
-# Use Python 3.9 slim as base
-FROM python:3.9-slim
+# Use Python 3.9 (non-slim)
+FROM python:3.9
 
 # Set timezone to Asia/Bangkok
 ENV TZ=Asia/Bangkok
