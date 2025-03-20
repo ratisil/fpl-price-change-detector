@@ -1,5 +1,12 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-36 11 * * * root /bin/bash -c 'cd /app && sleep 15 && /usr/local/bin/python price_change_detector.py'
-36 11 * * * root /bin/bash -c 'cd /app && sleep 35 && python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html'
+# Run price detection first
+38 12 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python price_change_detector.py' >> /app/logs/cron_price_detector.log 2>&1
+
+# Run FTP upload a few minutes later (give time for price detection to finish)
+39 12 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html' >> /app/logs/cron_ftp_upload.log 2>&1
+
+# Run the environment test *after* the others, so it captures the environment
+# after the other jobs *would have run*.
+40 12 * * * root /bin/bash -c 'cd /app && /usr/local/bin/python env_test.py arg1 arg2' >> /app/logs/cron_env_test.log 2>&1
