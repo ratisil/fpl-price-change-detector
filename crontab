@@ -1,5 +1,5 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-30 08 * * * root /bin/bash -c 'cd /app && sleep 35 && /usr/local/bin/python price_change_detector.py'
-30 08 * * * root /bin/bash -c 'cd /app && sleep 45 && python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html'
+10 09 * * * root /bin/bash -c 'cd /app && sleep 35 && /usr/local/bin/python price_change_detector.py'
+10 09 * * * root /bin/bash -c 'cd /app && sleep 45 && python ftp_upload.py /app/logs/fpl_prices.html fpl_prices.html'
