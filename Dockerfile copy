@@ -12,14 +12,17 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set the working directory
 WORKDIR /app
 
-# Copy ALL files from the current directory into /app
-COPY . .
+# Copy the Main Python script into the container
+COPY price_change_detector.py .
+
+# Copy the FTP Python script into the container
+COPY ftp_upload.py .
 
 # Install Python dependencies
 RUN pip install requests
 
 # Copy the crontab file into the container
-COPY crontab /etc/cron.d/fpl-cron  # Keep this line
+COPY crontab /etc/cron.d/fpl-cron
 
 # Give execution rights on the cron job file
 RUN chmod 0644 /etc/cron.d/fpl-cron
