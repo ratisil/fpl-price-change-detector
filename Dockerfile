@@ -18,12 +18,6 @@ COPY price_change_detector.py .
 # Copy the FTP Python script into the container
 COPY ftp_upload.py .
 
-# Copy the FTP wrapper script into the container
-COPY run_ftp_upload.sh .
-
-# Make the FTP wrapper script executable
-RUN chmod +x /app/run_ftp_upload.sh
-
 # Install Python dependencies
 RUN pip install requests
 
