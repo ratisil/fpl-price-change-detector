@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  fpl-price-check:
+  fpl-price-notify:
     build: .
-    container_name: fpl-price-check
+    container_name: fpl-price-notify
     volumes:
       - /volume1/docker/portainer/portainer_data/fpl-price-change/fpl_snapshots:/app/fpl_snapshots
       - /volume1/docker/portainer/portainer_data/fpl-price-change/logs:/app/logs
