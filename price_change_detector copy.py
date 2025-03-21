@@ -70,28 +70,38 @@ def format_price(cost):
 
 def format_output(risers, fallers, team_mapping):
     today_str = datetime.date.today().strftime("%d/%m/%Y")
-    # Case 4: No changes.
-    if not risers and not fallers:
-        return f"{today_str}\nNo price change today."
-    
     output_lines = [today_str, ""]
-
+    
     # Case 1: Both risers and fallers exist.
-    if risers:
+    if risers and fallers:
         output_lines.append(f"Price Risers! 📈 ({len(risers)})")
         for player, diff in risers:
             team = team_mapping.get(player.get("team"), "UNK")
             line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
             output_lines.append(line)
-    if fallers:
-        # Add a blank line only if there were risers
-        if risers:
-            output_lines.append("")
+        output_lines.append("")
         output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
         for player, diff in fallers:
             team = team_mapping.get(player.get("team"), "UNK")
             line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
             output_lines.append(line)
+    # Case 2: Only risers.
+    elif risers:
+        output_lines.append(f"Price Risers! 📈 ({len(risers)})")
+        for player, diff in risers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+    # Case 3: Only fallers.
+    elif fallers:
+        output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
+        for player, diff in fallers:
+            team = team_mapping.get(player.get("team"), "UNK")
+            line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
+    # Case 4: No changes.
+    else:
+        output_lines.append("No price change today.")
     
     return "\n".join(output_lines)
 
@@ -120,17 +130,16 @@ def main():
     logger.info("Process completed successfully. Output:\n" + output)
     print(output)
     
-    # Instead of using <pre>, we replace newlines with <br>
-    # and encode the pound sign for proper HTML rendering.
-    html_output = output.replace("\n", "<br>").replace("£", "&pound;")
-    html_content = f"""<!DOCTYPE html>
-<html>
+    # Write the output to an HTML file with a title, overwriting it each run.
+    html_content = f"""<html>
 <head>
     <meta charset="UTF-8">
     <title>FPL Price Changes</title>
 </head>
 <body>
-    {html_output}
+<pre>
+{output}
+</pre>
 </body>
 </html>"""
     html_filename = "/app/logs/fpl_prices.html"
