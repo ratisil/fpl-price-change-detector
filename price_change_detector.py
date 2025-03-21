@@ -138,7 +138,7 @@ def main():
 </head>
 <body>
 <pre>
-{output.rstrip()}
+{output}
 </pre>
 </body>
 </html>"""
