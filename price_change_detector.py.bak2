@@ -65,31 +65,33 @@ def compare_snapshots(old, new):
     logger.info(f"Comparison complete: {len(risers)} risers, {len(fallers)} fallers found.")
     return risers, fallers
 
+def format_price(cost):
+    return f"£{cost/10:.1f}m"
+
 def format_output(risers, fallers, team_mapping):
     today_str = datetime.date.today().strftime("%d/%m/%Y")
-    
     # Case 4: No changes.
     if not risers and not fallers:
         return f"{today_str}\nNo price change today."
     
     output_lines = [today_str, ""]
-    
-    # Case 1: Risers (if any)
+
+    # Case 1: Both risers and fallers exist.
     if risers:
-        output_lines.append(f"🟢 Price up +£0.1 📈 ({len(risers)})")
+        output_lines.append(f"Price Risers! 📈 ({len(risers)})")
         for player, diff in risers:
             team = team_mapping.get(player.get("team"), "UNK")
-            cost = player["now_cost"] / 10  # Convert tenths to pounds
-            output_lines.append(f"• {player['web_name']} ({team}) £{cost:.1f}")
-        output_lines.append("")
-    
-    # Case 2: Fallers (if any)
+            line = f"🟢 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
     if fallers:
-        output_lines.append(f"🔴 Price down -£0.1 📉 ({len(fallers)})")
+        # Add a blank line only if there were risers
+        if risers:
+            output_lines.append("")
+        output_lines.append(f"Price Fallers! 📉 ({len(fallers)})")
         for player, diff in fallers:
             team = team_mapping.get(player.get("team"), "UNK")
-            cost = player["now_cost"] / 10
-            output_lines.append(f"• {player['web_name']} ({team}) £{cost:.1f}")
+            line = f"🔴 {player['web_name']} #{team} {format_price(player['now_cost'])}"
+            output_lines.append(line)
     
     return "\n".join(output_lines)
 
@@ -118,7 +120,8 @@ def main():
     logger.info("Process completed successfully. Output:\n" + output)
     print(output)
     
-    # Convert output: replace newlines with <br> and encode the pound sign.
+    # Instead of using <pre>, we replace newlines with <br>
+    # and encode the pound sign for proper HTML rendering.
     html_output = output.replace("\n", "<br>").replace("£", "&pound;")
     html_content = f"""<!DOCTYPE html>
 <html>
