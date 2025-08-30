@@ -66,10 +66,6 @@ def compare_snapshots(old, new):
     return risers, fallers
 
 def format_output(risers, fallers, team_mapping):
-    # Sort risers and fallers by price in descending order
-    risers.sort(key=lambda item: item[0]['now_cost'], reverse=True)
-    fallers.sort(key=lambda item: item[0]['now_cost'], reverse=True)
-
     today_str = datetime.date.today().strftime("%d/%m/%Y")
     
     # Case 4: No changes.
